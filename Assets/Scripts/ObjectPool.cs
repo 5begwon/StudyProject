@@ -2,58 +2,48 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+// Singleton으로 ObjectPool
 public class ObjectPool : MonoBehaviour
 {
-    public static ObjectPool Instance;
+    public static ObjectPool instance;
 
+    /// <summary>
+    /// ObjectPool에 보관되는 오브젝트
+    /// </summary>
     [SerializeField]
-    private GameObject poolingObjectPrefab;
+    List<GameObject> poolObject = new List<GameObject>();
 
-     Queue<Monster> poolingObjectQueue = new Queue<Monster>();
-
-    void Awake()
+    private void Awake()
     {
-        Instance = this;
-        Init(4);
-    }
-
-    private void Init(int InitCount)
-    {
-        for (int i = 1; i < InitCount; i++)
-        {
-            poolingObjectQueue.Enqueue(CreateNewObject());
-        }
-    }
-
-    private Monster CreateNewObject()
-    {
-        var newObj = Instantiate(poolingObjectPrefab).GetComponent<Monster>(); 
-        newObj.gameObject.SetActive(false); 
-        newObj.transform.SetParent(transform); 
-        return newObj; 
-    }
-
-    public static Monster GetObject() 
-    { 
-        if (Instance.poolingObjectQueue.Count > 0) 
-        {
-            var obj = Instance.poolingObjectQueue.Dequeue();
-            obj.transform.SetParent(null);
-            obj.gameObject.SetActive(true);
-            return obj;
-        }
+        if (instance != null)
+            Destroy(this);
         else
-        {
-            var newObj = Instance.CreateNewObject();
-            newObj.gameObject.SetActive(true);
-            newObj.transform.SetParent(null);
-            return newObj;
-        }
+            instance = this;
+        DontDestroyOnLoad(this);
     }
 
-    public static void ReturnObject(Monster obj) 
+    public GameObject GetObjFromPool(int id, Transform t)
     {
-        obj.gameObject.SetActive(false);
-        obj.transform.SetParent(Instance.transform); Instance.poolingObjectQueue.Enqueue(obj);
+        GameObject obj = poolObject[id];
+
+        obj.transform.parent = t;
+        obj.transform.position = t.position;
+        obj.SetActive(true);
+        return obj;
+    }
+
+    public void BackObjToPool(int id)
+    {
+        GameObject obj = poolObject[id];
+        obj.transform.parent = this.transform;
+        obj.SetActive(false);
+    }
+
+    public void BackObjToPool(GameObject go)
+    {
+        int index = poolObject.FindIndex(x => x == go);
+        GameObject obj = poolObject[index];
+        obj.transform.parent = this.transform;
+        obj.SetActive(false);
     }
 }

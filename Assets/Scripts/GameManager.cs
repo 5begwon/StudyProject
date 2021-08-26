@@ -20,6 +20,9 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    [SerializeField]
+    GameObject AddPrefab;
+
     void Start()
     {
        
@@ -27,5 +30,22 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.F1))
+        {
+            ObjectPool.instance.GetObj(0, gameObject.transform);
+        }
+        if (Input.GetKeyDown(KeyCode.F2))
+        {
+            ObjectPool.instance.GetObj(1, gameObject.transform);
+        }
+        if (Input.GetKeyDown(KeyCode.F3))
+        {
+            ObjectPool.instance.GetObj(2, gameObject.transform);
+        }
+        if(Input.GetKeyDown(KeyCode.F4))
+        {
+            ObjectPool.instance.GetObj(3, gameObject.transform);
+
+        }
     }
 }

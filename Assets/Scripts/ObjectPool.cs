@@ -6,7 +6,6 @@ using UnityEngine;
 public class ObjectPool : MonoBehaviour
 {
     public static ObjectPool instance;
-
     /// <summary>
     /// ObjectPool에 보관되는 오브젝트
     /// </summary>
@@ -22,28 +21,34 @@ public class ObjectPool : MonoBehaviour
         DontDestroyOnLoad(this);
     }
 
-    public GameObject GetObjFromPool(int id, Transform t)
+    public GameObject GetObj(int id, Transform t)
     {
         GameObject obj = poolObject[id];
 
-        obj.transform.parent = t;
+        obj.transform.parent = gameObject.transform;
         obj.transform.position = t.position;
         obj.SetActive(true);
         return obj;
     }
 
-    public void BackObjToPool(int id)
+    public void ReleaseObj(int id)
     {
         GameObject obj = poolObject[id];
         obj.transform.parent = this.transform;
         obj.SetActive(false);
     }
 
-    public void BackObjToPool(GameObject go)
+    public void ReleaseObj(GameObject obj)
     {
-        int index = poolObject.FindIndex(x => x == go);
-        GameObject obj = poolObject[index];
+        int index = poolObject.FindIndex(x => x == obj);
+        GameObject GameObj = poolObject[index];
         obj.transform.parent = this.transform;
         obj.SetActive(false);
+    }
+
+    public void AddObject(GameObject obj)
+    {
+        poolObject.Add(obj);
+        Instantiate(obj, gameObject.transform);
     }
 }

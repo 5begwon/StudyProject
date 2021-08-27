@@ -20,5 +20,18 @@ public class PlayerManager : MonoBehaviour
         }
     }
 
+    public static PlayerManager Instance
+    {
+        get
+        {
+            if (null == instance)
+            {
+                return null;
+            }
+            return instance;
+        }
+    }
+
     /* 변수 선언 */
+    public float speed = 15.0f;
 }

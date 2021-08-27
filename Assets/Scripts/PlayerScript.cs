@@ -7,7 +7,6 @@ public class PlayerScript : MonoBehaviour
     Rigidbody rigid;
     Vector3 moveVector;
 
-    public float speed = 15.0f;
     float hAxis;
     float vAxis;
 
@@ -25,19 +24,11 @@ public class PlayerScript : MonoBehaviour
 
         moveVector = new Vector3(hAxis, 0, vAxis).normalized;
 
-        transform.position += moveVector * speed * Time.deltaTime;
+        transform.position += moveVector * PlayerManager.Instance.speed * Time.deltaTime;
     }
 
     void FixedUpdate()
     {
         rigid.angularVelocity = Vector3.zero;
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if(other.tag == "Wall")
-        {
-            
-        }
-    }
+    }   
 }

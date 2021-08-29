@@ -30,5 +30,13 @@ public class PlayerScript : MonoBehaviour
     void FixedUpdate()
     {
         rigid.angularVelocity = Vector3.zero;
-    }   
+    }
+
+    void OnCollisionEnter(Collision other)
+    {
+        if (other.gameObject.CompareTag("END"))
+        {
+            Debug.Log("Stage1 Clear!");
+        }
+    }
 }

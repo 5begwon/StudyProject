@@ -4,19 +4,17 @@ using UnityEngine;
 
 public class PlayerScript : MonoBehaviour
 {
-    Rigidbody rigid;
+    Rigidbody rigidbody;
     Vector3 moveVector;
 
     float hAxis;
     float vAxis;
 
-    // Start is called before the first frame update
     void Start()
     {
-        rigid = GetComponent<Rigidbody>();
+        rigidbody = GetComponent<Rigidbody>();
     }
 
-    // Update is called once per frame
     void Update()
     {
         hAxis = Input.GetAxisRaw("Horizontal");
@@ -29,7 +27,7 @@ public class PlayerScript : MonoBehaviour
 
     void FixedUpdate()
     {
-        rigid.angularVelocity = Vector3.zero;
+        rigidbody.angularVelocity = Vector3.zero;
     }
 
     void OnCollisionEnter(Collision other)

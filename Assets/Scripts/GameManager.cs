@@ -3,56 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public interface IState
+public class GameManager : Singleton<GameManager>
 {
-    void Operation();
-}
-
-public class Pattern1 : IState
-{
-    public void Operation()
-    {
-
-    }
-}
-
-public class Pattern2 : IState
-{
-    public void Operation()
-    {
-
-    }
-}
-
-public class Pause : IState
-{
-    public void Operation()
-    {
-
-    }
-}
-
-public class GameManager : MonoBehaviour
-{
-    public static GameManager instance = null;
-
-    void Awake()
-    {
-        if (instance == null)
-        {
-            instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else
-        {
-            if (instance != this)
-                Destroy(this.gameObject);
-        }
-    }
-
-    [SerializeField]
-    GameObject AddPrefab;
-
     public GameObject player;
     public GameObject map_prefab1;
     public GameObject map_prefab2;
@@ -62,12 +14,10 @@ public class GameManager : MonoBehaviour
 
     public GameObject canvas;
 
-    public StateManager statemanager = new StateManager(new Pause());
-
     void Start()
     {
-        ObjectPool.instance.ReleaseObj(0);
-        ObjectPool.instance.ReleaseObj(1);
+        ObjectPool.Instance.ReleaseObj(0);
+        ObjectPool.Instance.ReleaseObj(1);
     }
 
     void Update()
@@ -79,22 +29,22 @@ public class GameManager : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.F1))
         {
-            ObjectPool.instance.GetObj(0, gameObject.transform);
+            ObjectPool.Instance.GetObj(0, gameObject.transform);
             player.transform.position = map1_pattern_spawn.transform.position;
 
             if (map_prefab2.activeSelf == true)
-                ObjectPool.instance.ReleaseObj(1);
+                ObjectPool.Instance.ReleaseObj(1);
 
             canvas.SetActive(false);
         }
 
         if (Input.GetKeyDown(KeyCode.F2))
         {
-            ObjectPool.instance.GetObj(1, gameObject.transform);
+            ObjectPool.Instance.GetObj(1, gameObject.transform);
             player.transform.position = map2_pattern_spawn.transform.position;
 
             if (map_prefab1.activeSelf == true)
-                ObjectPool.instance.ReleaseObj(0);
+                ObjectPool.Instance.ReleaseObj(0);
 
             canvas.SetActive(false);
         }

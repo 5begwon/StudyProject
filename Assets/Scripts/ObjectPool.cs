@@ -2,24 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-// Singleton으로 ObjectPool
-public class ObjectPool : MonoBehaviour
+public class ObjectPool : Singleton<ObjectPool>
 {
-    public static ObjectPool instance;
     /// <summary>
     /// ObjectPool에 보관되는 오브젝트
     /// </summary>
     [SerializeField]
     List<GameObject> poolObject = new List<GameObject>();
-
-    private void Awake()
-    {
-        if (instance != null)
-            Destroy(this);
-        else
-            instance = this;
-        DontDestroyOnLoad(this);
-    }
 
     public GameObject GetObj(int id, Transform t)
     {
